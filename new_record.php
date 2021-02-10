@@ -119,7 +119,7 @@
 		</div>
 			<div class="row">
 				<input class="buttons" type="button" value="Back" onclick="location.href='index.php'" style="float: left"/>
-				<input class="buttons" type="submit" name="action" id="save" value="Save" style="float: center"/>
+				<input class="buttons" type="submit" id="save" value="Save" style="float: center"/>
 			</div>
 		</form>
 	</div>
@@ -128,21 +128,22 @@
 <script type="text/javascript">
 	function saveData()
 	{
-		alert('here');
-		console.log(forms["form"]["name"].value);
-		return false;
-		var v_name 				= forms[0]["name"].value;
-		var v_surname 			= document.getElementById("surname").value;
-		var v_email 			= document.getElementById("email").value;
-		var contact_no 			= document.getElementById("contact_no").value;
-		var temperature 		= document.getElementById("temperature").value;
-		var hours 				= document.getElementById("hours").value;
-		var minutes 			= 10;//s(0)ocument.getElementById("minutes").value;
-		var covid_symptoms 		= document.getElementById("covid_symptoms").value;
-		var wearing_mask 		= document.getElementById("wearing_mask").value;
+		//alert('here');
+		//console.log('here' + forms[0].name);
+		//return false;
+		var form = document.forms[0];
+		var v_name 				= form.elements[1].value;
+		var v_surname 			= form.elements[2].value;
+		var v_email 			= form.elements[3].value;
+		var contact_no 			= form.elements[4].value;
+		var temperature 		= form.elements[5].value;
+		var wearing_mask 		= form.elements[6].value;
+		var covid_symptoms 		= form.elements[7].value;
+		var hours 				= form.elements[8].value;
+		var minutes 			= form.elements[9].value;
 		var error				= '';
 		//validate
-
+		
 		if(v_name.length >= 0 && v_name == '')
 		{
 			error += '\\nName is required';
