@@ -1,0 +1,117 @@
+body{
+	background-color: grey;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color:white;
+}
+
+/*global*/
+.container {
+	text-align: center;
+}
+
+.buttons{
+	height: 30px;
+	border:0;
+	padding-right: 15px;
+	padding-left: 15px;
+	font-weight: bold;
+	background-color: #0f379f;
+	color:white;
+	margin-bottom: 10px;
+}
+
+input[type=text]{
+	height: 30px;
+	margin:0;
+	padding-left: 10px;
+}
+
+
+.buttons:hover{
+	background-color: #3c3277;
+	color:white;
+	cursor: pointer;
+}
+
+
+.table td ,th, table{
+	border:2px black solid;
+	border-collapse: collapse;
+	padding: 7px;
+}
+
+.table {
+ 	background-color: #6d6da6;
+	margin-left: auto;
+ 	margin-right: auto;
+}
+
+form .col-1{
+	float:left;
+	width: 30%;
+	text-align: left;
+}
+
+form .col-2{
+	float:left;
+	width: 70%;
+	text-align: left;
+	border:none;
+}
+
+.row{
+	margin-left: 10px;
+	padding: 10px;
+	border-bottom: 1px black solid;
+	height: 30px;
+	vertical-align: middle;
+	line-height: 30px;
+}
+
+.row h3 {
+	margin-bottom: 80px;
+}
+
+.form{
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	background-color: #6d6da6;
+}
+
+label{
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+@media screen and (max-width: 770px)
+{
+	.form{
+		width: 100%;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 20px;
+		background-color: #6d6da6;
+	}
+		form .col-1{
+			float:left;
+			width: 50%;
+			text-align: left;
+			border:none;
+		}
+
+		form .col-2 {
+			float:left;
+			width: 50%;
+			text-align: left;
+			border:none;
+		}	
+
+		label{
+			font-weight: bold;
+			font-size: 1em;
+		}
+
+}
