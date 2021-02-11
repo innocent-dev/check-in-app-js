@@ -20,7 +20,7 @@
 	
 	//create database
 	var db;
-	var request = window.indexedDB.open("visitorsDatabase", 1);
+	var request = window.indexedDB.open("visitorsDatabase");
 
     request.onerror = function(event) 
     {
@@ -106,7 +106,7 @@
 		</div>
 		<div class="row">
 			<div class="col-1"><label for="temperature">Temperature</label></div>
-			<div class="col-2"><input type="text" name="temperature" id="temperature" size="2" style="text-align: center" required></div>
+			<div class="col-2"><input type="text" name="temperature" id="temperature" size="2" style="text-align: center"></div>
 		</div>
 		<div class="row">
 			<div class="col-1">
@@ -128,61 +128,80 @@
 <script type="text/javascript">
 	function saveData()
 	{
-		//alert('here');
-		//console.log('here' + forms[0].name);
-		//return false;
-		var form = document.forms[0];
-		var v_name 				= form.elements[1].value;
-		var v_surname 			= form.elements[2].value;
-		var v_email 			= form.elements[3].value;
-		var contact_no 			= form.elements[4].value;
-		var temperature 		= form.elements[5].value;
-		var wearing_mask 		= form.elements[6].value;
-		var covid_symptoms 		= form.elements[7].value;
-		var hours 				= form.elements[8].value;
-		var minutes 			= form.elements[9].value;
+		var v_name 				= document.forms[0]["name"].value;
+		var v_surname 			= document.forms[0]["surname"].value;
+		var v_email 			= document.forms[0]["email"].value;
+		var contact_no 			= document.forms[0]["contact_no"].value;
+		var temperature 		= document.forms[0]["temperature"].value;
+		var wearing_mask 		= document.forms[0]["wearing_mask"].value;
+		var covid_symptoms 		= document.forms[0]["covid_symptoms"].value;
+		var hours 				= document.forms[0]["hours"].value;
+		var minutes 			= document.forms[0]["minutes"].value;
 		var error				= '';
+		var next_id				= 0;
+		var savedEmails			= '';
+		var exists = 0;
 		//validate
-		
+
+		//name
 		if(v_name.length >= 0 && v_name == '')
 		{
-			error += '\\nName is required';
+			error += '\n Name is required';
 		}
 
-		if(v_surname.length >= 0 && v_surname == '')
+		//surname
+		if(v_surname.length <= 0 && v_surname == '')
 		{
-			error += '\\n Surname is required';
+			error += '\n Surname is required';
+		}
+
+		//temperature
+		if(temperature.length <=0 && temperature == '')
+		{
+			error += '\n Temperature is required';
+		}
+		else
+		{
+			//check if it's numeric
+			if(isNaN(temperature))
+			{
+				error += '\n Temperature should be a numeric value';
+			}
 		}
 
 		if(error.length > 4)
 		{
 			var error_message = 'Please fix the following :';
-			error_message =+ '' + error;
+			error_message += '' + error;
 			alert(error_message);
 			return false;
 		}	
 
-		var request 	= db.transaction(["visitorsDatabase"], "readwrite")
-		.objectStore("visitorsDatabase")
-		.add({ id: "1", 
-			name: v_name, 
-			surname: v_surname, 
-			email: v_email, 
-			contact_no: contact_no,
-			covid_symptoms: covid_symptoms,
-			wearing_mask: wearing_mask,
-			temperature: temperature,
-			hours: hours,
-			minutes: minutes 
-		});
 
-		request.onsuccess = function(event) {
-               alert(v_name + " has been added to your database.");
+	//count inserted records
+		var transaction = db.transaction(['visitorsDatabase'], 'readwrite');
+		var objectStore = transaction.objectStore('visitorsDatabase');
+
+		var countRequest = objectStore.count();
+		countRequest.onsuccess = function() //check and set next id
+		{
+			next_id = countRequest.result + 1; //next id to create
+
+			var request	= objectStore.add({id: next_id ,name: v_name, surname: v_surname, email: v_email, contact_no: contact_no,covid_symptoms: covid_symptoms,
+				wearing_mask: wearing_mask,
+				temperature: temperature,
+				hours: hours,
+				minutes: minutes 
+			});
+
+			request.onsuccess = function(event) {
+	            alert(v_name + " has been added to your database.");
             };
-            
-            request.onerror = function(event) {
-               alert("Unable to add data\r\n "+ v_name + " is already exist in your database! ");
-            }
+	            
+	            request.onerror = function(event) {
+	               alert("Unable to add data\r\n "+ v_name + " already exist in your database! ");
+	            }
+		}
 	}
 
 	function getData()
