@@ -135,10 +135,26 @@
 
 function saveData()
 {
-	//connectDB();
+	var name 			= document.forms[0]["name"].value;
+	var surname 		= document.forms[0]["surname"].value;
+	var contact_no 		= document.forms[0]["contact_no"].value;
+	var email_id 		= document.forms[0]["email"].value;
+	var wearing_mask 	= document.forms[0]['wearing_mask'].value;
+	var covid_symptoms	= document.forms[0]["covid_symptoms"].value;
+	var temperature     = document.forms[0]["temperature"].value;
+	var hours			= document.forms[0]["hours"].value;
+	var minutes			= document.forms[0]["minutes"].value;
+
 	const visitor_data = {
-		email_id: "innocent0@test.com",
-		temperature: 10
+		email_id: email_id,
+		name: name,
+		surname: surname,
+		contact_no: contact_no,
+		wearing_mask: wearing_mask,
+		covid_symptoms: covid_symptoms,
+		hours: hours,
+		minutes: minutes,
+		temperature: temperature
 	};
 
 	var v_transaction 	= db.transaction("visitor_details", "readwrite");

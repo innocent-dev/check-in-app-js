@@ -7,9 +7,21 @@
 	<script type="text/javascript">
 		//connect index db
 		var db;
-		var request = window.indexedDB.open("visitorsDatabase", 1);
+		var request = window.indexedDB.open("visitors_db", 3);
+		
+		request.onupgradeneeded = function()
+		{
+			//tables created here
+			 var db = request.result;
+			const visitorDetails = db.createObjectStore("visitor_details", {keyPath: "email_id"}); //more like a table
+			
+			console.log(`database created by the name ${db.name}`);
+		}
+
 		request.onsuccess = function(event) {
         db = request.result;
+
+
         getData();
         console.log("success: "+ db);
     };
@@ -59,8 +71,8 @@
 	<script type="text/javascript">
 		function getData()
 		{
-			var transaction = db.transaction(['visitorsDatabase'], "readonly"); //initiate transaction
-			var objectStore = transaction.objectStore("visitorsDatabase");//where the data is stored
+			var transaction = db.transaction(['visitor_details'], "readonly"); //initiate transaction
+			var objectStore = transaction.objectStore("visitor_details");//where the data is stored
 			var requestData = objectStore.openCursor()// get info, all in the loop
 			var rowData 	= '';
 			
@@ -79,9 +91,9 @@
 					table += '<tr><td>' + cursor.value.name + '</td>';
 					table += '<td>' + cursor.value.surname + '</td>';
 					table += '<td>' + cursor.value.contact_no + '</td>';
-					table += '<td>' + cursor.value.email + '</td>';
-					table += '<td></td>';
-					table += '<td></td>';
+					table += '<td>' + cursor.value.email_id + '</td>';
+					table += `<td>${cursor.value.covid_symptoms}</td>`;
+					table += `<td>${cursor.value.covid_symptoms}</td>`;
 					table += '<td>' + cursor.value.temperature +'</td>';
 					table += '<td>' + cursor.value.hours + ':' + cursor.value.minutes +'</td><td></td>';
 					counter+= 1;
