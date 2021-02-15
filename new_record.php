@@ -17,27 +17,33 @@
 	if (!window.indexedDB) {
 	   window.alert("Your browser doesn't support a stable version of IndexedDB.")
 	}
-	
+	var db; 
+	connectDB();
+	function connectDB()
+{
 	//create database
-	var db;
-	var request = window.indexedDB.open("visitorsDatabase");
+	var request = indexedDB.open("visitors_db", 3);
+	request.onupgradeneeded = function()
+	{
+		//tables created here
+		 var db = request.result;
+		const visitorDetails = db.createObjectStore("visitor_details", {keyPath: "email_id"}); //more like a table
+		
+		console.log(`database created by the name ${db.name}`);
+	}
 
-    request.onerror = function(event) 
-    {
-    	console.log("error: ");
-	};
+	request.onsuccess = function()
+	{
+		db = request.result; //our database with required data
+		//alert("upgrade is completed and success is called");
+	}
 
-	request.onsuccess = function(event) {
-        db = request.result;
-       // getData();
-        console.log("success: "+ db);
-    };
+	request.onerror = function()
+	{
+	//	alert("upgrade is created");
+	}
 
-    request.onupgradeneeded = function(event) {
-        var db = event.target.result;
-        var objectStore = db.createObjectStore("visitorsDatabase", {keyPath: "id"});
-        
-     }
+}
 </script>
 
 <nav>
@@ -48,7 +54,7 @@
 </nav>
 <section class="form">
 	<div class="container">	
-		<form method="post" action="new_record.php" onsubmit="return saveData()">
+		<form method="post" onsubmit="return saveData()">
 			<div class="row">
 				<label>Add New Record</label>
 			</div>
@@ -126,113 +132,32 @@
 </section>
 
 <script type="text/javascript">
-	function saveData()
+
+function saveData()
+{
+	//connectDB();
+	const visitor_data = {
+		email_id: "innocent0@test.com",
+		temperature: 10
+	};
+
+	var v_transaction 	= db.transaction("visitor_details", "readwrite");
+	var v_oject_store 	= v_transaction.objectStore("visitor_details");
+	var v_request 		= v_oject_store.add(visitor_data);
+
+	v_request.onsuccess = function(event)
 	{
-		var v_name 				= document.forms[0]["name"].value;
-		var v_surname 			= document.forms[0]["surname"].value;
-		var v_email 			= document.forms[0]["email"].value;
-		var contact_no 			= document.forms[0]["contact_no"].value;
-		var temperature 		= document.forms[0]["temperature"].value;
-		var wearing_mask 		= document.forms[0]["wearing_mask"].value;
-		var covid_symptoms 		= document.forms[0]["covid_symptoms"].value;
-		var hours 				= document.forms[0]["hours"].value;
-		var minutes 			= document.forms[0]["minutes"].value;
-		var error				= '';
-		var next_id				= 0;
-		var savedEmails			= '';
-		var exists = 0;
-		//validate
-
-		//name
-		if(v_name.length >= 0 && v_name == '')
-		{
-			error += '\n Name is required';
-		}
-
-		//surname
-		if(v_surname.length <= 0 && v_surname == '')
-		{
-			error += '\n Surname is required';
-		}
-
-		//temperature
-		if(temperature.length <=0 && temperature == '')
-		{
-			error += '\n Temperature is required';
-		}
-		else
-		{
-			//check if it's numeric
-			if(isNaN(temperature))
-			{
-				error += '\n Temperature should be a numeric value';
-			}
-		}
-
-		if(error.length > 4)
-		{
-			var error_message = 'Please fix the following :';
-			error_message += '' + error;
-			alert(error_message);
-			return false;
-		}	
-
-
-	//count inserted records
-		var transaction = db.transaction(['visitorsDatabase'], 'readwrite');
-		var objectStore = transaction.objectStore('visitorsDatabase');
-
-		var countRequest = objectStore.count();
-		countRequest.onsuccess = function() //check and set next id
-		{
-			next_id = countRequest.result + 1; //next id to create
-
-			var request	= objectStore.add({id: next_id ,name: v_name, surname: v_surname, email: v_email, contact_no: contact_no,covid_symptoms: covid_symptoms,
-				wearing_mask: wearing_mask,
-				temperature: temperature,
-				hours: hours,
-				minutes: minutes 
-			});
-
-			request.onsuccess = function(event) {
-	            alert(v_name + " has been added to your database.");
-            };
-	            
-	            request.onerror = function(event) {
-	               alert("Unable to add data\r\n "+ v_name + " already exist in your database! ");
-	            }
-		}
+		alert(`data added successfully`);
 	}
 
-	function getData()
+	v_request.onerror = function()
 	{
-		 // open a read/write db transaction, ready for retrieving the data
-		var note		  	= document.getElementById("note");
-		var transaction 	= db.transaction(["visitorsDatabase"], "readwrite");
-		var objectStore 	= transaction.objectStore("visitorsDatabase"); // create an object store on the transaction
-		var requestObject	= objectStore.get("1"); // Make a request to get a record by key from the object store (id)
-		 
-		 requestObject.onsuccess = function(event) {
-			var v_name 				= requestObject.result.name;
-			var v_surname 			= requestObject.result.surname;
-			var v_contact_no 		= requestObject.result.contact_no;
-			var email 				= requestObject.result.email;
-			var temperature 		= requestObject.result.temperature;
-			var hours 				= requestObject.result.hours;
-			var minutes 			= requestObject.result.minutes;
-			
-			if( typeof v_contact_no == "undefined") v_contact_no = '';
-			document.getElementById("name").value = v_name;
-			document.getElementById("surname").value = v_surname;
-			document.getElementById("contact_no").value = v_contact_no;		
-			document.getElementById("temperature").value = temperature;
-			document.getElementById("email").value = email;
-			document.getElementById("minutes").value = minutes;
-			document.getElementById("hours").value = hours;
-			
-
-		 }
+		console.log(`error`);
 	}
+
+	return true;
+}	
+
 </script>
 </body>
 </html>
