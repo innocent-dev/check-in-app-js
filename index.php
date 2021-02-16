@@ -35,7 +35,12 @@
 	</nav>
 	<section class="visitor_list">
 		<div class="container">
-			<h3>Date 09 February 2021</h3>
+			<h3>
+				<span id="date"></span>
+				<span id="hours"></span>
+				<span id="seconds">:</span>
+				<span id="minutes"></span>
+			</h3>
 			<div id="visitor_list_table">
 				<table class="table" id="table">	
 				<tr>
@@ -49,18 +54,6 @@
 					<th>Time-in</th>
 					<th></th>
 				</tr>
-				<!--<tr id="row"></tr> -->
-				<!-- <tr>
-					<td id="name"></td>
-					<td id="surname"></td>
-					<td id="contact_no"></td>
-					<td id="email"></td>
-					<td id="wearing_mask"></td>
-					<td id="covid_symptoms"></td>
-					<td id="temperature"></td>
-					<td id="time_in"></td>
-					<td><input type="button" class="buttons" value="Update" name="" onclick="location.href='new_record.php'"></td>
-				</tr>-->
 				<tr>
 					<td colspan="100%" style="text-align: center"><input type="button" id="new_record" class="buttons" name="" value="Add New Record" onclick="location.href='new_record.php'">&nbsp;</td>
 				</tr>
@@ -69,6 +62,31 @@
 		</div>
 	</section>
 	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			var months		= ["January","February","March","April","May","June","July","August","September","October","November","December"];
+			var date_time 	= new Date();
+			var month_no	= date_time.getMonth();
+			var day			= date_time.getDate();
+			var year		= date_time.getFullYear();
+			var month 		= months[month_no];
+
+			//set date
+			
+			$("#date").html(`${day} ${month} ${year}`);
+
+			setInterval(function (){
+				var date_time 	= new Date();
+				var hours		= date_time.getHours();
+				var minutes		= date_time.getMinutes();
+
+				$("#hours").html(`${hours}`);
+				$("#minutes").html(`${minutes}`);
+				$("#seconds").html(`:`);
+			},1000);
+
+		});
+
 		function getData()
 		{
 			var transaction = db.transaction(['visitor_details'], "readonly"); //initiate transaction
@@ -95,7 +113,8 @@
 					table += `<td>${cursor.value.covid_symptoms}</td>`;
 					table += `<td>${cursor.value.covid_symptoms}</td>`;
 					table += '<td>' + cursor.value.temperature +'</td>';
-					table += '<td>' + cursor.value.hours + ':' + cursor.value.minutes +'</td><td></td>';
+					table += '<td>' + cursor.value.hours + ':' + cursor.value.minutes +'</td>';
+					table += `<td><input type="button" class="buttons" value="Update" onclick="location.href='check_in.php?email_id=${cursor.value.email_id}'" /></td>`;
 					counter+= 1;
 					cursor.continue();
 					return false;
@@ -106,6 +125,7 @@
 				document.getElementById("visitor_list_table").innerHTML = table;
 			}
 		}
+
 	</script>
 </body>
 </html>

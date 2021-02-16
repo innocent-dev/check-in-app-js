@@ -86,6 +86,10 @@ label{
 	font-size: 1.1em;
 }
 
+.alert-row{
+	border-bottom: 1px black solid;
+}
+
 @media screen and (max-width: 770px)
 {
 	.form{
