@@ -407,7 +407,7 @@ function saveData()
 			//errors displayed next to element
 			if(time_error.length > 1)
 			{
-				time_error += " and entered minutes are a numeric value";
+				time_error += " and make sure minutes are a numeric value";
 			}
 			else
 			{
