@@ -67,6 +67,7 @@ function connectDB()
 				<div class="col-1"><label for="name">Name</label></div>
 				<div class="col-2">
 					<input type="text" name="name" id="name" placeholder="Enter Name">
+					<span id="name_error" class="error_message"></span>
 				</div>
 			</div>
 			<div class="row">
@@ -75,6 +76,7 @@ function connectDB()
 				</div>
 				<div class="col-2">
 					<input type="text" name="surname" id="surname" placeholder="Enter Surname">
+					<span id="surname_error" class="error_message"></span>
 				</div>
 			</div>
 			<div class="row">
@@ -83,6 +85,7 @@ function connectDB()
 				</div>
 				<div class="col-2">
 					<input type="text" name="contact_no" id="contact_no" placeholder="Enter Contact No">
+					<span id="contact_no_error" class="error_message"></span>
 				</div>
 			</div>
 			<div class="row"> 
@@ -90,7 +93,8 @@ function connectDB()
 					<label>Email Id</label>
 				</div>
 				<div class="col-2">
-					<input type="text" name="email" id="email" placeholder="Enter Email Address" style="width: 300px">
+					<input type="text" name="email" id="email" placeholder="Enter Email Address" style="width: 250px">
+					<span id="email_error" class="error_message"></span>
 				</div>
 
 			</div>
@@ -103,6 +107,7 @@ function connectDB()
 					<option value="Yes">Yes</option>
 					<option value="No">No</option>
 				</select>
+				<span id="wearing_mask_error" class="error_message"></span>
 			</div>
 		</div>
 		<div class="row">
@@ -113,11 +118,15 @@ function connectDB()
 					<option value="Yes">Yes</option>
 					<option value="No">No</option>
 				</select>
+				<span id="covid_symptoms_error" class="error_message"></span>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-1"><label for="temperature">Temperature</label></div>
-			<div class="col-2"><input type="text" name="temperature" id="temperature" size="2" style="text-align: center"></div>
+			<div class="col-2">
+				<input type="text" name="temperature" id="temperature" size="2" style="text-align: center">
+				<span id="temperature_error" class="error_message"></span>
+			</div>
 		</div>
 		<div class="row">
 			<div class="col-1">
@@ -126,6 +135,7 @@ function connectDB()
 			<div class="col-2">
 				<input type="text" name="hours" id="hours" size="2" style="text-align: center" value=""/> H
 				<input type="text" name="minutes" id="minutes" size="2" style="text-align: center" value=""/> M
+				<span id="time_error" class="error_message"></span>
 			</div>
 		</div>
 			<div class="row">
@@ -148,41 +158,122 @@ $(document).ready(function(){
   	$("#minutes").val(minutes);
 });
 
+//on blur event (when element looses focus) to clear error highlights
+$("#name").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#name_error").text('');
+	}
+});
+
+$("#surname").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#surname_error").text('');
+	}
+});
+
+$("#contact_no").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#contact_no_error").text('');
+	}
+});
+
+$("#email").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#email_error").text('');
+	}
+});
+
+$("#wearing_mask").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#wearing_mask_error").text('');
+	}
+});
+
+$("#covid_symptoms").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#covid_symptoms_error").text('');
+	}
+});
+
+$("#temperature").blur(function(){
+	if($(this).val().length > 0)
+	{
+		$(this).css("outline", "");
+		$("#temperature_error").text('');
+	}
+});
+
 function saveData()
 {
 	//javascript used to get data from form
-	var name 			= document.forms[0]["name"].value;
-	var surname 		= document.forms[0]["surname"].value;
-	var contact_no 		= document.forms[0]["contact_no"].value;
-	var email_id 		= document.forms[0]["email"].value;
-	var wearing_mask 	= document.forms[0]['wearing_mask'].value;
-	var covid_symptoms	= document.forms[0]["covid_symptoms"].value;
-	var temperature     = document.forms[0]["temperature"].value;
-	var hours			= document.forms[0]["hours"].value;
-	var minutes			= document.forms[0]["minutes"].value;
-	var errors			= '';
-	var list_errors		= '';
+	var name 					= document.forms[0]["name"].value;
+	var surname 				= document.forms[0]["surname"].value;
+	var contact_no 				= document.forms[0]["contact_no"].value;
+	var email_id 				= document.forms[0]["email"].value;
+	var wearing_mask 			= document.forms[0]['wearing_mask'].value;
+	var covid_symptoms			= document.forms[0]["covid_symptoms"].value;
+	var temperature     		= document.forms[0]["temperature"].value;
+	var hours					= document.forms[0]["hours"].value;
+	var minutes					= document.forms[0]["minutes"].value;
+	var errors					= '';
+	var list_errors				= '';
+	var array_errors			= [];
+	var array_target_element 	= [];
+	var time_error 				= '';
 
 	//validate
 	if(name.length <=0 && name == '')
 	{
-		errors += '<li>Please enter your name</li>';
+		var name_error = 'Please enter your name';
+		errors += `<li>${name_error}</li>`;
+		array_errors.push(name_error);
+		array_target_element.push("name");
 	}
 
 	if(surname.length <=0 && surname == '')
 	{
-		errors += '<li>Please enter your surname</li>';
+		var surname_error_message = "Please enter your surname"
+		errors += `<li>${surname_error_message}</li>`;
+		
+		if(array_errors.length > 1)
+		{
+			array_errors += ",";
+			array_target_element += ",";
+		}
+		
+		array_errors.push(surname_error_message)
+		array_target_element.push("surname");
 	}
 
 	if(contact_no.length <=0 && contact_no == '')
 	{
-		errors += '<li>Please enter your contact number</li>';
+		var contact_no_error = "Please enter your contact number"
+		errors += `<li>${contact_no_error}</li>`;
+
+		array_errors.push(contact_no_error)
+		array_target_element.push("contact_no");
 	}
 
 
 	if(email_id.length <=0 && email_id == '')
 	{
-		errors += '<li>Please enter your email Id</li>';
+		var email_error = 'Please enter your email Id';
+		errors += `<li>${email_error}</li>`;
+		array_errors.push(email_error)
+		array_target_element.push("email");
+
 	}
 	else
 	{
@@ -190,80 +281,195 @@ function saveData()
 		var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		if(!regex.test(email_id))
 		{
-			errors += '<li>Please enter a valid email Id</li>';
+			var email_error = "Please enter a valid email Id";
+			errors += `<li>${email_error}</li>`;
+
+			//push error into array of errors 
+			array_errors.push(email_error)
+			array_target_element.push("email");
 		}
 	}
 
 	if(wearing_mask.length <=0 && wearing_mask == '')
 	{
-		errors += '<li>Please specify whether you wearing a musk or not</li>';
+		var mask_error = "Please specify whether you wearing a musk or not";
+		errors += `<li>${mask_error}</li>`;
+
+		//push error into array of errors 
+		array_errors.push(mask_error)
+		array_target_element.push("wearing_mask");
+
 	}
 
 	if(covid_symptoms.length <=0 && covid_symptoms == '')
 	{
-		errors += '<li>Please Specify whether you have any covid symtoms or not</li>';
+		var covid_symptoms_error = "Please Specify whether you have any covid symtoms or not";
+		errors += `<li>${covid_symptoms_error}</li>`;
+
+		//push error into array of errors 
+		array_errors.push(covid_symptoms_error)
+		array_target_element.push("covid_symptoms");
 	}
 
 	if(temperature.length <=0 && temperature == '')
 	{
-		errors += '<li>Please enter your temperature</li>';
+		var temperature_error = "Please enter your temperature";
+		errors += `<li>${temperature_error}</li>`;
+
+		//push error into array of errors 
+		array_errors.push(temperature_error)
+		array_target_element.push("temperature");
 	}
 	else
 	{
 		//check if temperature is numeric
 		if(isNaN(temperature))
 		{
-			errors += '<li>Please make sure entered temperature is a numeric value</li>';
+			temperature_error = "Please make sure entered temperature is a numeric value";
+			errors += `<li>${temperature_error}</li>`;
+
+			//push error into array of errors 
+			array_errors.push(temperature_error)
+			array_target_element.push("temperature");
 		}
 	}
 
 	if(hours.length <=0 && hours == '')
 	{
-		errors += '<li>Please enter your time-in hours</li>';
+		var hours_error = "Please enter your time-in hours";
+		
+		time_error = hours_error;//errors displayed next to element
 
-		if(isNaN(hours))
-		{
-			errors += '<li>Please make sure entered hours are a numeric value</li>';
-		}
+		errors += `<li>${hours_error}</li>`;
+
+		//push error into array of errors 
+		array_errors.push(hours_error)
+		array_target_element.push("hours");
 	}
 	else
 	{
 		//check if numeric
 		if(isNaN(hours))
 		{
-			errors += '<li>Please make sure entered hours are a numeric value</li>';
+			var hours_error = "Please make sure entered hours are a numeric value";
+			
+			time_error = hours_error;//errors displayed next to element
+			
+			errors += `<li>${hours_error}</li>`;
+			
+			//push error into array of errors 
+			array_errors.push(hours_error)
+			array_target_element.push("hours");
 		}
 		else
 		{
 			if(hours > 23)
 			{
-				errors += '<li>Please make sure entered hours are not above 23</li>';
+				var hours_error = "Please make sure entered hours are not above 23";
+				time_error = hours_error;
+				errors += `<li>${hours_error}</li>`;
+
+				//push error into array of errors 
+				array_errors.push(hours_error)
+				array_target_element.push("hours");
 			}
 		}
 	}
 
 	if(minutes.length <=0 && minutes == '')
 	{
-		errors += '<li>Please enter your time-in minutes</li>';
+		var minutes_error = "Please enter your time-in minutes";
+		
+		//errors displayed next to element
+		if(time_error.length > 1)
+		{
+			time_error += " and minutes";
+		}
+		else
+		{
+			time_error = minutes_error;
+		}
+		
+		errors += `<li>${minutes_error}</li>`;
 
-		//check if numeric
+		//push error into array of errors 
+		array_errors.push(minutes_error)
+		array_target_element.push("minutes");
+
 	}
 	else
 	{
 		//check if numeric
 		if(isNaN(minutes))
 		{
-			errors += '<li>Please make sure entered minutes are a numeric value</li>';
+			var minutes_error = "Please make sure entered minutes are a numeric value";
+		
+			//errors displayed next to element
+			if(time_error.length > 1)
+			{
+				time_error += " and entered minutes are a numeric value";
+			}
+			else
+			{
+				time_error = minutes_error;
+			}
+
+			errors += `<li>${minutes_error}</li>`;
+
+			//push error into array of errors 
+			array_errors.push(minutes_error)
+			array_target_element.push("minutes");
 		}
 		else
 		{
 			if(minutes > 59)
 			{
-				errors += '<li>Please make sure entered minutes are not above 59</li>';
+				var minutes_error = "Please make sure entered minutes are not above 59";
+
+				//errors displayed next to element
+				if(time_error.length > 1)
+				{
+					time_error += " and minutes are not above 59";
+				}
+				else
+				{
+					time_error = minutes_error;
+				}
+
+				errors += `<li>${minutes_error}</li>`;
+				
+				//push error into array of errors 
+				array_errors.push(minutes_error)
+				array_target_element.push("minutes");
 			}
 		}
 	}
 
+	//highlit and display messages next to elements with errors
+
+	if(array_errors.length > 0)
+	{
+		for(i=0;i<array_errors.length;i++)
+		{
+			if(i == 0)
+			{
+				$(`#${array_target_element[i]}`).focus();
+			}
+
+			if(`${array_target_element[i]}` == "hours" || `${array_target_element[i]}` == "minutes")
+			{
+				alert('here');
+				$(`#${array_target_element[i]}`).css("outline", "2px solid red");
+				$(`#time_error`).text(time_error);				
+
+			}
+			else
+			{
+				$(`#${array_target_element[i]}`).css("outline", "2px solid red");
+				$(`#${array_target_element[i]}_error`).text(array_errors[i]);				
+			}
+		}
+	}
 
 	if(errors.length > 0)
 	{

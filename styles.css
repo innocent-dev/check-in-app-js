@@ -90,10 +90,16 @@ label{
 	border-bottom: 1px black solid;
 }
 
-/* not getting here*/
+/* not getting here*/ 
 .select {
-	height: 100px;
-	width: 300px;
+	height: 34px;x
+}
+
+/*style error text*/
+.error_message {
+	color: red;
+	font-size: 15px;
+	padding-left: 10px;
 }
 
 @media screen and (max-width: 770px)
