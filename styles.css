@@ -90,6 +90,12 @@ label{
 	border-bottom: 1px black solid;
 }
 
+/* not getting here*/
+.select {
+	height: 100px;
+	width: 300px;
+}
+
 @media screen and (max-width: 770px)
 {
 	.form{

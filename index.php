@@ -114,7 +114,7 @@
 					table += `<td>${cursor.value.covid_symptoms}</td>`;
 					table += '<td>' + cursor.value.temperature +'</td>';
 					table += '<td>' + cursor.value.hours + ':' + cursor.value.minutes +'</td>';
-					table += `<td><input type="button" class="buttons" value="Update" onclick="location.href='check_in.php?email_id=${cursor.value.email_id}'" /></td>`;
+					table += `<td><input type="button" class="buttons" value="Update" onclick="location.href='update.php?email_id=${cursor.value.email_id}'" /></td>`;
 					counter+= 1;
 					cursor.continue();
 					return false;

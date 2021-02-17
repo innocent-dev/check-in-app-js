@@ -90,7 +90,7 @@ function connectDB()
 					<label>Email Id</label>
 				</div>
 				<div class="col-2">
-					<input type="text" name="email" id="email" placeholder="Enter Email Address">
+					<input type="text" name="email" id="email" placeholder="Enter Email Address" style="width: 300px">
 				</div>
 
 			</div>
@@ -98,7 +98,7 @@ function connectDB()
 			<div class="col-1">
 				<label for="wearing_mask">Wearing a mask ?</label></div>
 			<div class="col-2">
-				<select name="wearing_mask" id="wearing_mask">
+				<select name="wearing_mask" id="wearing_mask" class="select">
 					<option value="">Choose</option>
 					<option value="Yes">Yes</option>
 					<option value="No">No</option>
@@ -108,7 +108,7 @@ function connectDB()
 		<div class="row">
 			<div class="col-1"><label for="covid_symptoms">Covid Symtoms</label></div>
 			<div class="col-2">
-				<select name="covid_symptoms" id="covid_symptoms">
+				<select name="covid_symptoms" id="covid_symptoms" class="select">
 					<option value="">Choose</option>
 					<option value="Yes">Yes</option>
 					<option value="No">No</option>
@@ -298,8 +298,7 @@ function saveData()
 
 	v_request.onsuccess = function(event)
 	{
-		//alert(`data added successfully`);
-		//return true;
+		window.location.href='index.php';
 	}
 
 	v_request.onerror = function()
