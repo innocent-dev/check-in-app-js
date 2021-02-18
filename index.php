@@ -115,7 +115,7 @@
 					table += '<td>' + cursor.value.temperature +'</td>';
 					table += '<td>' + cursor.value.hours + ':' + cursor.value.minutes +'</td>';
 					table += `<td><input type="button" class="buttons" value="Update" onclick="location.href='update.php?email_id=${cursor.value.email_id}'"/>`;
-					table += `<input type="button" value="Delete" onclick="if(confirm('Are you sure'){location.href='delete.php?email_id=${cursor.value.email_id}})'" class="buttons" style="float:left"/>`;
+					table += `<input type="button" value="Delete" onclick="if(confirm('Are you are')){location.href='delete.php?email_id=${cursor.value.email_id}'}" class="buttons" style="float:left"/>`;
 					table += `</td>`;
 					counter+= 1;
 					cursor.continue();
