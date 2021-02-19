@@ -110,7 +110,7 @@
 					table += '<td>' + cursor.value.surname + '</td>';
 					table += '<td>' + cursor.value.contact_no + '</td>';
 					table += '<td>' + cursor.value.email_id + '</td>';
-					table += `<td>${cursor.value.covid_symptoms}</td>`;
+					table += `<td>${cursor.value.wearing_mask}</td>`;
 					table += `<td>${cursor.value.covid_symptoms}</td>`;
 					table += '<td>' + cursor.value.temperature +'</td>';
 					table += '<td>' + cursor.value.hours + ':' + cursor.value.minutes +'</td>';

@@ -129,8 +129,8 @@
 					is_wearing_mask_selected = 'selected';
 				}
 
-				covid_symptoms_options += `<option ${selected}>${yes_no_options[i]}</option>`;
-				wearing_mark_options += `<option ${is_wearing_mask_selected}>${yes_no_options[i]}</option>`;
+				covid_symptoms_options += `<option value="${yes_no_options[i]}" ${selected}>${yes_no_options[i]}</option>`;
+				wearing_mark_options += `<option value="${yes_no_options[i]}" ${is_wearing_mask_selected}>${yes_no_options[i]}</option>`;
 			}
 
 			//set data
@@ -161,7 +161,7 @@
 		var surname 		= $("#surname").val();
 		var contact_no 		= document.forms[0]['contact_no'].value;
 		var email_id 		= document.forms[0]['email_id'].value;
-		var wearing_mask 	= document.forms[0]['wearing_mask'].value;
+		//var wearing_mask 	= document.forms[0]['wearing_mask'].value;
 		var wearing_mask 	= document.forms[0]['wearing_mask'].value;
 		var covid_symptoms	= document.forms[0]["covid_symptoms"].value;
 		var temperature     = document.forms[0]["temperature"].value;
